@@ -36,10 +36,10 @@ import ManagerDialog from '@/views/System/components/ManagerDialog.vue'
 import { CirclePlus, Delete, EditPen, View } from '@element-plus/icons-vue'
 import { getManagerPage, addManager, editManager, deleteManager } from '@/api/modules/manager'
 import { getRoleList } from '@/api/modules/role'
-
+import { useDepartmentStore } from '@/store/modules/department'
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref()
-
+const departmentStore = useDepartmentStore()
 // 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
 const initParam = reactive({})
 
@@ -100,6 +100,13 @@ const columns: ColumnProps<SysManager.ResManagerList>[] = [
     prop: 'createTime',
     label: '创建时间',
     width: 200
+  },
+  {
+    prop: 'departId',
+    label: '所属部门',
+    enum: departmentStore.departmentList,
+    fieldNames: { label: 'name', value: 'id' },
+    search: { el: 'cascader', span: 2, props: { props: { checkStrictly: true }, filterable: true } }
   },
   { prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ]
