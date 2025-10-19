@@ -31,7 +31,7 @@ import ProTable from '@/components/ProTable/index.vue'
 import { DepartmentApi } from '@/api/modules/department'
 import { CirclePlus, EditPen, Delete } from '@element-plus/icons-vue'
 import { useHandleData } from '@/hooks/useHandleData'
-import { useDepartmentStore } from '@/store/modules/department'
+// import { useDepartmentStore } from '@/store/modules/department'
 import DepartmentDialog from './components/DepartmentDialog.vue'
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
@@ -48,7 +48,7 @@ const dataCallback = (data: any) => {
   }
 }
 
-const departmentStore = useDepartmentStore()
+// const departmentStore = useDepartmentStore()
 
 // 表格配置项
 const columns: ColumnProps[] = [
@@ -58,13 +58,13 @@ const columns: ColumnProps[] = [
     label: '部门名称',
     search: { el: 'input' }
   },
-  {
-    prop: 'departId',
-    label: '所属部门',
-    enum: departmentStore.departmentList,
-    fieldNames: { label: 'name', value: 'id' },
-    search: { el: 'cascader', span: 2, props: { props: { checkStrictly: true }, filterable: true } }
-  },
+  // {
+  //   prop: 'departId',
+  //   label: '所属部门',
+  //   enum: departmentStore.departmentList,
+  //   fieldNames: { label: 'name', value: 'id' },
+  //   search: { el: 'cascader', span: 2, props: { props: { checkStrictly: true }, filterable: true } }
+  // },
   {
     prop: 'level',
     label: '部门等级'
