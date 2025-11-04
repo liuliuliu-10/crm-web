@@ -9,17 +9,18 @@
       :dataCallback="dataCallback"
       :searchCol="{ xs: 2, sm: 3, md: 4, lg: 6, xl: 8 }"
     >
-      <!-- 表格 header 按钮 -->
-      <template #tableHeader>
+      <!-- 表格 header 按钮 - 只在isShowHeader为true时显示 -->
+      <template #tableHeader v-if="props.isShowHeader">
         <el-button type="primary" :icon="CirclePlus" v-hasPermi="['sys:product:add']" @click="openDrawer('新增')">新增商品</el-button>
       </template>
+
       <!-- 表格操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen" v-hasPermi="['sys:product:edit']" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-        <el-button type="success" link :icon="Check" v-hasPermi="['sys:product:up']" @click="openStateDialog('商品定时上架', scope.row)" v-if="scope.row.status !== 1"
-          >商品上架</el-button
+        <el-button type="success" link :icon="Check" v-hasPermi="['sys:product:up']" @click="openStateDialog('商品定时上架', scope.row)" v-if="scope.row.status !== 1">
+          商品上架</el-button
         >
-        <el-button type="danger" link :icon="Bottom" v-hasPermi="['sys:product:down']" @click="openStateDialog('商品定时下架', scope.row)" v-if="scope.row.status === 1"
+        <el-button type="danger" link :icon="Bottom" v-hasPermi="['sys:product:down']" @click="openStateDialog('商品定时下架', scope.row)" v-if="scope.row.status == 1"
           >商品下架</el-button
         >
       </template>
@@ -113,4 +114,15 @@ const openStateDialog = (title: string, row: Partial<any> = {}) => {
   }
   stateDialogRef.value.acceptParams(params)
 }
+
+const props = defineProps({
+  isShowHeader: {
+    type: Boolean,
+    default: true
+  }
+})
+
+defineExpose({
+  proTable
+})
 </script>
