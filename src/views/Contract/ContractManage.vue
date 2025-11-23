@@ -17,6 +17,7 @@
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen" v-hasPermi="['sys:contract:edit']" @click="openDrawer('编辑', scope.row)">编辑</el-button>
         <el-button type="success" link :icon="MessageBox" v-hasPermi="['sys:contract:print']" @click="openPrintDrawer(' 打印合同 ', scope.row)"> 打印</el-button>
+        <el-button type="info" link :icon="Share" v-hasPermi="['sys:contract:audit']" v-if="scope.row.status === 0" @click="startApproval(scope.row)">审核</el-button>
       </template>
     </ProTable>
     <ContractDialog ref="dialogRef" />
@@ -30,10 +31,11 @@ import type { ColumnProps } from '@/components/ProTable/interface'
 import ProTable from '@/components/ProTable/index.vue'
 import { ContractApi } from '@/api/modules/contract/index'
 
-import { CirclePlus, EditPen, MessageBox } from '@element-plus/icons-vue'
+import { CirclePlus, EditPen, MessageBox, Share } from '@element-plus/icons-vue'
 import ContractDialog from './components/ContractDialog.vue'
 import { ContractStatusList } from '@/configs/enum'
 import PrintContractDialog from './components/PrintContractDialog.vue'
+import { useHandleData } from '@/hooks/useHandleData'
 
 // 获取 ProTable 元素, 调用其获取刷新数据方法 (还能获取到当前查询参数, 方便导出携带参数)
 const proTable = ref()
@@ -133,5 +135,11 @@ const openPrintDrawer = (title: string, row: Partial<any> = {}) => {
     fullscreen: true
   }
   printDialogRef.value.acceptParams(params)
+}
+
+//开始审核合同
+const startApproval = async (row: any) => {
+  await useHandleData(ContractApi.startApproval, { id: row.id }, `发起合同审核`)
+  proTable.value.getTableList()
 }
 </script>
